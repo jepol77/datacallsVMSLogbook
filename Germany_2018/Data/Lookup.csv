@@ -1,0 +1,7 @@
+Measure,Shape,Time_Start,Time_End,Gears,Metiers,Species_kg,Species_euro,Effort,Timeframe
+Measure 1,M1,,,Bottom_Trawls,,,,,
+Measure 2,M2,,,,,,,,
+Measure 3,M3,,,Gillnets_Entangling_nets ,,,,,
+Measure 4,M4,01-03,31-10,Gillnets_Entangling_nets ,,,,,
+Measure 5,M5,,,Bottom_Trawls,,,,,
+Measure 7,M7,,,Gillnets_Entangling_nets ,,,,,
