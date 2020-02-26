@@ -1,0 +1,37 @@
+LE_GEAR,min,max,net
+DRB,2,4,dredge
+DRH,0.1,2,dredge
+HMD,2,4,dredge
+OTB,2,4,bottom trawl
+OTT,2,4,bottom trawl
+PTB,2,4,bottom trawl
+TBN,2,4,bottom trawl
+TB,2,4,bottom trawl
+TBS,2,4,bottom trawl
+TBB,2,4,beam trawl
+OTM,2,4,pelagic trawl
+PTM,2,4,pelagic trawl
+LH,0,0.1,long line
+LHP,0,0.1,long line
+LL,0,0.1,long line
+LLD,0,0.1,long line
+LLS,0,0.1,long line
+LX,0,0.1,long line
+LTL,0,0.1,long line
+FPO,0.1,2,fyke net
+FYK,0.1,4,fyke net
+FPN,0.1,4,fyke net
+FIX,0.1,4,fyke net
+GTR,0.1,4,net
+GNS,0.1,4,net
+GND,0.1,4,net
+GN,0.1,4,net
+GTN,0.1,4,net
+SDN,0.1,4,anchored seine
+SSC,0.1,4,fly shooting seine
+SPR,0.1,4,pair fly shooting seine
+SX,0.1,4,other seines
+SV,0.1,4,boat seines
+PS,0.1,4,purse seine
+UNK,0.1,4,unknown
+MIS,0.1,4,unknown
