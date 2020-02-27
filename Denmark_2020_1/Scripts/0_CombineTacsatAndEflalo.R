@@ -15,7 +15,7 @@
 ### See https://github.com/nielshintzen/vmstools/wiki for details.
 
 ### This code uses static speed thresholds, if automatic thresholds are preferred, please change code accordingly.
-### The out is a combined VMS and Logbook file based on catch date and trip id, and is filtered to only the requested ICES squares.
+### The output is a combined VMS and Logbook file based on catch date and trip id, and is filtered to only the requested ICES squares.
 
 ### If your country combines VMS and Logbooks in a different way more suitable for your country, please use that method instead, and  
 ### mention it when you answer the call. 
