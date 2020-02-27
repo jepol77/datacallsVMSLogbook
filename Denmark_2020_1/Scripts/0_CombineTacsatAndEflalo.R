@@ -23,6 +23,7 @@
 rm(list=ls())
 library(vmstools)
 library(data.table)
+library(mapview)
 
 #- Set the working directory to the folder where you keep your code and data
 sysPath       <-"Q:/dfad/users/jepol/home/20-02-25_Potentielle_MPA/"
