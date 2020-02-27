@@ -5,7 +5,7 @@
 # Before running this code the following needs to be done:
 ### - All vms points needs to be cleaned, so that all points are:
 ###     - Not inside Harbor, on earth, not on land, not duplicate, not pseudoDupliacate, no foreign vessels
-###   cleaned vms files named tacsat should be saved as cleanTacsat_"Year".Rdata (eg. cleanTacsat_2016.Rdata) in RdataPath.
+###   cleaned vms files named tacsat should be saved as cleanTacsat_"Year".rds (eg. cleanTacsat_2016.rds) in RdataPath.
 ### - All logbook data need to be cleaned, so all records are: 
 ###     - Not duplicated, not NoCatch, no landings before departures, no overlapping trips, no dates before 1st of January, 
 ###       not wrong mesh sizes, not wrong vessel lengths
