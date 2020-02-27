@@ -1,3 +1,12 @@
+### Use combined Logbook and VMS files, either from the supllied code "0_CombineTacsatAndEflalo" or your countrys own method for combining. 
+
+### The output consist of 5 csv files, which will be generated in the Results folder:
+### - Two files with landings, no. of vessels and effort hours per ICES square / defined areas, year, month and gear  
+### - Two files with no. of vessels per ICES square / defined areas and gear catagory (mobile bottom contacting gears / other gears)
+### - One file with all pings, where fishing is assumed, within the defined areas. This file holds information on position, year, month, gear, speed and area
+
+### Please respond to the datacall with a zipped file attached/downloadable consisting these five csv files. 
+
 rm(list=ls())
 library(vmstools)
 library(data.table)
@@ -12,9 +21,12 @@ dir.create(resPath, showWarnings = FALSE)
 
 FlagCountry <- "DK" # Change to your own country code
 
+YearsToSubmit <- 2015:2019 # If your country havent processed 2019 yet, please change to 2014:2018
+
 ################## Load all pings inside the defined areas for the whole period ###################
-dat1 <- rbindlist(lapply(paste0(RdataPath, "TacsatEflalo_", 2013:2019, ".rds"), readRDS), fill = T)
+dat1 <- rbindlist(lapply(paste0(RdataPath, "TacsatEflalo_", YearsToSubmit, ".rds"), readRDS), fill = T)
 dat1[, LE_YEAR := year(SI_DATIM)] #Add year
+dat1[, LE_MONTH := month(SI_DATIM)] #Add year
 
 #Remove species columns with sum 0
 zeroes <- names(colSums(Filter(is.numeric, dat1))
@@ -30,17 +42,17 @@ dat2 <- dat1[!is.na(Name)]
 
 #Per ICES square
 out1 <- dat1[, c(NoVessels=uniqueN(VE_REF), Effort_hrs=sum(INTV/60, na.rm=T), lapply(.SD, sum, na.rm=T)),
-             by=.(LE_YEAR, Square, LE_GEAR, FlagCountry),
+             by=.(LE_YEAR, LE_MONTH, Square, LE_GEAR, FlagCountry),
              .SDcols=grepl("LE_KG|LE_EURO", names(dat1))]
 
-fwrite(out1, paste0(resPath, "landings_Square.csv"))
+fwrite(out1, paste0(resPath, "landings_Square_", FlagCountry, ".csv"))
 
 #Per defined area
 out2 <- dat2[, c(NoVessels=uniqueN(VE_REF), Effort_hrs=sum(INTV/60, na.rm=T), lapply(.SD, sum, na.rm=T)),
-             by=.(LE_YEAR, Region, Name, LE_GEAR, FlagCountry),
+             by=.(LE_YEAR, LE_MONTH, Region, Name, LE_GEAR, FlagCountry),
              .SDcols=grepl("LE_KG|LE_EURO", names(dat1))]
 
-fwrite(out2, paste0(resPath, "landings_RegionName.csv"))
+fwrite(out2, paste0(resPath, "landings_RegionName_", FlagCountry, ".csv"))
 
 
 # Check if all your mobile bottom contacting gears are withing this list. 
@@ -56,15 +68,19 @@ dat2[, GearGroup := ifelse(LE_GEAR %in% Bottom_Trawls, "MBCG", "Other")]
 #Find unique number of vessels, per year for mobile bottom gears 
 #and other gears and write it to result folder
 nov_square <- dat1[, .(NoVessels=uniqueN(VE_REF)),
-                   by=.(LE_YEAR, Square, GearGroup, FlagCountry)]
+                   by=.(LE_YEAR, LE_MONTH, Square, GearGroup, FlagCountry)]
 
 nov_RegionName <- dat2[, .(NoVessels=uniqueN(VE_REF)),
-                   by=.(LE_YEAR, Region, Name, GearGroup, FlagCountry)]
+                   by=.(LE_YEAR, LE_MONTH, Region, Name, GearGroup, FlagCountry)]
+
+
+fwrite(nov_square, paste0(resPath, "NumberOfVessels_Square_", FlagCountry,  ".csv"))
+fwrite(nov_RegionName, paste0(resPath, "NumberOfVessels_RegionName_", FlagCountry,  ".csv"))
 
 
 # Save pings within the defined areas with data on gear, year, position, speed and area 
-pings <- dat1[, c("LE_YEAR", "LE_GEAR", "SI_LONG", "SI_LATI", "SI_SP", "Square", "Name", "Region", "FlagCountry")]
-fwrite(pings, paste0(resPath, "pings_N2k.csv"))
+pings <- dat2[, c("LE_YEAR", "LE_MONTH", "LE_GEAR", "SI_LONG", "SI_LATI", "SI_SP", "Square", "Name", "Region", "FlagCountry")]
+fwrite(pings, paste0(resPath, "pings_", FlagCountry, ".csv"))
 
 
 ############################################################################################################
@@ -76,7 +92,7 @@ fwrite(pings, paste0(resPath, "pings_N2k.csv"))
 ################## Load logbook data for the whole period ###################
 m_list3 <- list.files(path = RdataPath, pattern= "cleanEflalo_", full.names = T)
 dat3 <- data.table()
-for(y in 2013:2019){
+for(y in YearsToSubmit){
   eflalo <- readRDS(paste0(RdataPath, "cleanEflalo_", y, ".rds"))
   eflalo$LE_YEAR <- y
   dat3 <- rbindlist(list(dat3, eflalo), fill = T)
@@ -90,9 +106,10 @@ for (i in seq_along(dat3)) set(dat3, i=which(is.na(dat3[[i]])), j=i, value=0)
 vmscod <- dat1[,.(LE_KG_COD_vms = sum(LE_KG_COD, na.rm = T)), by=.(LE_RECT = Square, LE_YEAR)]
 logcod <- dat3[,.(LE_KG_COD_log = sum(LE_KG_COD, na.rm = T)), by=.(LE_RECT, LE_YEAR)]
 
-options("scipen"=100, "digits"=4)
 
 codcompare <- merge(vmscod, logcod)
+
+options("scipen"=50, "digits"=0)
 
 View(codcompare)
 

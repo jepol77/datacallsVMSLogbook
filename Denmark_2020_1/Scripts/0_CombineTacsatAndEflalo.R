@@ -1,6 +1,6 @@
 ### Combine Tacsat And Eflalo - proposal to be adapted to your specific needs ###
-### Code (Vers 2 06.06.2019) by Christian von  Dorrien (christian.dorrien@thuenen.de) 
-### based on code by ?Jeppe Olsen (jepol@aqua.dtu.dk)  
+### Code (Vers 3 27.02.2020) by Jeppe Olsen (jepol@aqua.dtu.dk) 
+### The code is developed with input from Christian von  Dorrien (christian.dorrien@thuenen.de) 
 
 # Before running this code the following needs to be done:
 ### - All vms points needs to be cleaned, so that all points are:
@@ -9,12 +9,16 @@
 ### - All logbook data need to be cleaned, so all records are: 
 ###     - Not duplicated, not NoCatch, no landings before departures, no overlapping trips, no dates before 1st of January, 
 ###       not wrong mesh sizes, not wrong vessel lengths
-###   Cleaned logbook data named eflalo should be saved as cleanEflalo_"Year".Rdata (eg. cleanEflalo_2016.Rdata) in RdataPath.
+###   Cleaned logbook data named eflalo should be saved as cleanEflalo_"Year".rds (eg. cleanEflalo_2016.rds) in RdataPath.
 ### - Make a file called speedarr.csv, which should contain speed thresholds for all gears in your fleet. Place it in dataPath
 
 ### See https://github.com/nielshintzen/vmstools/wiki for details.
 
-### This code uses static speed thresholds, if automatic thresholds are requested, please change code accordingly.
+### This code uses static speed thresholds, if automatic thresholds are preferred, please change code accordingly.
+### The out is a combined VMS and Logbook file based on catch date and trip id, and is filtered to only the requested ICES squares.
+
+### If your country combines VMS and Logbooks in a different way more suitable for your country, please use that method instead, and  
+### mention it when you answer the call. 
 
 rm(list=ls())
 library(vmstools)
@@ -26,6 +30,8 @@ RdataPath   <- paste0(sysPath,"Rdata/") ## Put cleaned tacsat and eflalo files i
 dataPath    <- paste0(sysPath,"Data/")  ## Put file speedarr.csv in this folder
 
 FlagCountry <- "DK" # Change to your own country code
+
+YearsToSubmit <- 2015:2019 # If your country havent processed 2019 yet, please change to 2014:2018
 
 # If directories not exist, create them
 dir.create(sysPath, showWarnings = FALSE)
@@ -43,7 +49,7 @@ mapview(shp)
 country     <- "dnk"
 interval    <- 60 #set interval time applicable for your country VMS
 
-for (Year in c(2013:2019)) {
+for (Year in YearsToSubmit) {
   print(Year)  
   
   tacsat <- readRDS(paste0(RdataPath, "cleanTacsat_", Year, ".rds"))
@@ -69,8 +75,9 @@ for (Year in c(2013:2019)) {
   #Only use vms points that can be merged with logbooks
   tacsatp <- subset(tacsatp,FT_REF != 0)
   
-  # Assign Gears to tacsatp in accordance with the logbook
+  # Assign Gears and mesh size to tacsatp in accordance with the logbook
   tacsatp$LE_GEAR        <- eflalo$LE_GEAR[match(tacsatp$FT_REF,eflalo$FT_REF)]
+  tacsatp$LE_MSZ        <- eflalo$LE_MSZ[match(tacsatp$FT_REF,eflalo$FT_REF)]
   
   # If there is no duration on a ping, 
   # set it to the default interval of the country
@@ -110,6 +117,18 @@ for (Year in c(2013:2019)) {
   for(mm in gears){
     t[LE_GEAR==mm & SI_SP >= speedarr[speedarr$LE_GEAR==mm,"min"] & SI_SP <= speedarr[speedarr$LE_GEAR==mm,"max"], SI_STATE:=1]
   }
+  
+  
+  ####### Danish vessels using TBB have different speed thresholds depending on mesh size. This is a way to deal with that. Is commented out as per default. ##################################
+  t[t$LE_GEAR=="TBB",]$SI_STATE <- 0
+  
+  t[t$LE_GEAR=="TBB" & t$SI_SP >= 2 & t$SI_SP <= 4 
+          & t$LE_MSZ <= 40,]$SI_STATE <- 1
+  
+  t[t$LE_GEAR=="TBB" & t$SI_SP >= 5 & t$SI_SP <= 7 
+          & t$LE_MSZ > 40,]$SI_STATE <- 1
+  #############################################################################################################################################################################################
+  
   
   #save all pings for later processing
   t_all <- t

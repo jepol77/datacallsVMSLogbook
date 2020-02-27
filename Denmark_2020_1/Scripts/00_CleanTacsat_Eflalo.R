@@ -14,7 +14,7 @@ dir.create(RdataPath, showWarnings = FALSE)
 interval <- 60
 spThres <- 25
 
-yearsToSubmit <- sort(2013:2019)
+YearsToSubmit <- 2015:2019 # If your country havent processed 2019 yet, please change to 2014:2018
 
 for (year in yearsToSubmit) {
   
@@ -49,7 +49,7 @@ for (year in yearsToSubmit) {
   ### Add Intervals between pings ###
   tacsat <- intervalTacsat(tacsat,level="vessel")
   tacsat$INTV[is.na(tacsat$INTV)] <- interval
-  tacsat$INTV[tacsat$INTV>120]    <- interval  ### If there is no pings for more than two hours, set the interval value to one hour
+  tacsat$INTV[tacsat$INTV> (2*interval)]    <- interval  ### If there is no pings for more than twice the normal interval, set the interval value to the normal interval
   tacsat <- tacsat[tacsat$INTV!=0,] # Remove duplicates
   
   #Point in harbor
