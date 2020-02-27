@@ -44,9 +44,6 @@ setwd(sysPath)
 shp <- readRDS(paste0(RdataPath, "shp.rds"))
 mapview(shp)
 
-
-#- Set the country abbreviation to e.g. deu, gbr, dnk
-country     <- "dnk"
 interval    <- 60 #set interval time applicable for your country VMS
 
 for (Year in YearsToSubmit) {
