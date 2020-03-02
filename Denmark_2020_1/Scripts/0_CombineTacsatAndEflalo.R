@@ -26,7 +26,7 @@ library(data.table)
 library(mapview)
 
 #- Set the working directory to the folder where you keep your code and data
-sysPath       <-"Q:/dfad/users/jepol/home/20-02-25_Potentielle_MPA/"
+sysPath       <-"Q:/dfad/users/jepol/home/GitHub/datacallsVMSLogbook/Denmark_2020_1/"
 RdataPath   <- paste0(sysPath,"Rdata/") ## Put cleaned tacsat and eflalo files in this folder
 dataPath    <- paste0(sysPath,"Data/")  ## Put file speedarr.csv in this folder
 
@@ -40,10 +40,6 @@ dir.create(RdataPath, showWarnings = FALSE)
 dir.create(dataPath, showWarnings = FALSE)
 # 
 setwd(sysPath)
-
-### Load and inspect polygons
-shp <- readRDS(paste0(RdataPath, "shp.rds"))
-mapview(shp)
 
 interval    <- 60 #set interval time applicable for your country VMS
 
@@ -118,13 +114,13 @@ for (Year in YearsToSubmit) {
   
   
   ####### Danish vessels using TBB have different speed thresholds depending on mesh size. This is a way to deal with that. Is commented out as per default. ##################################
-  #t[t$LE_GEAR=="TBB",]$SI_STATE <- 0
-  #
-  #t[t$LE_GEAR=="TBB" & t$SI_SP >= 2 & t$SI_SP <= 4 
-  #        & t$LE_MSZ <= 40,]$SI_STATE <- 1
-  #
-  #t[t$LE_GEAR=="TBB" & t$SI_SP >= 5 & t$SI_SP <= 7 
-  #        & t$LE_MSZ > 40,]$SI_STATE <- 1
+  t[t$LE_GEAR=="TBB",]$SI_STATE <- 0
+
+  t[t$LE_GEAR=="TBB" & t$SI_SP >= 2 & t$SI_SP <= 4
+         & t$LE_MSZ <= 40,]$SI_STATE <- 1
+
+  t[t$LE_GEAR=="TBB" & t$SI_SP >= 5 & t$SI_SP <= 7
+         & t$LE_MSZ > 40,]$SI_STATE <- 1
   #############################################################################################################################################################################################
   
   
@@ -190,30 +186,7 @@ for (Year in YearsToSubmit) {
   zeroes <- names(colSums(Filter(is.numeric, ts))
                    [colSums(Filter(is.numeric, ts))==0])
   ts[,(zeroes):=NULL]
-  
-  #Add ices square to data
-  ts$Square <- ICESrectangle(data.frame(SI_LONG = ts$SI_LONG,
-                                                SI_LATI = ts$SI_LATI))
-  
-  ns_squares <- c("39F4", "39F5", "39F6", "39F7", "39F8", "40F3", "40F4", "40F5", "40F6", "40F7", 
-                  "40F8", "41F3", "41F4", "41F5", "41F6", "41F7", "41F8", "42F5", "42F6", "42F7",
-                  "42F8", "43F6", "43F7", "43F8", "44F8", "44F9", "44G0", "45F9", "45G0")
-  
-  bs_squares <- c("38G3", "38G4", "38G5", "39G4", "39G5", "39G6", "40G4", "40G5")
-  
-  #Only keep pings within these Ices Squares
-  ts <- ts[Square %in% c(ns_squares, bs_squares)]
  
-  #Add Name and Region to TacsatEflalo
-  pts <- ts %>% 
-    sf::st_as_sf(coords = c("SI_LONG", "SI_LATI")) %>% 
-    sf::st_set_crs(4326)
-  
-  out <- st_join(pts, shp, join = st_intersects)
-  
-  ts$Name <- out$Name
-  ts$Region <- out$Region
-  
   ts$FlagCountry <- FlagCountry
   
   #Save the combined VMS and Logbook file where fishing is assumed.
