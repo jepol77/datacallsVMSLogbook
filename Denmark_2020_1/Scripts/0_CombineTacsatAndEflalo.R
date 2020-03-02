@@ -114,13 +114,13 @@ for (Year in YearsToSubmit) {
   
   
   ####### Danish vessels using TBB have different speed thresholds depending on mesh size. This is a way to deal with that. Is commented out as per default. ##################################
-  t[t$LE_GEAR=="TBB",]$SI_STATE <- 0
-
-  t[t$LE_GEAR=="TBB" & t$SI_SP >= 2 & t$SI_SP <= 4
-         & t$LE_MSZ <= 40,]$SI_STATE <- 1
-
-  t[t$LE_GEAR=="TBB" & t$SI_SP >= 5 & t$SI_SP <= 7
-         & t$LE_MSZ > 40,]$SI_STATE <- 1
+  #t[t$LE_GEAR=="TBB",]$SI_STATE <- 0
+  #
+  #t[t$LE_GEAR=="TBB" & t$SI_SP >= 2 & t$SI_SP <= 4
+  #       & t$LE_MSZ <= 40,]$SI_STATE <- 1
+  #
+  #t[t$LE_GEAR=="TBB" & t$SI_SP >= 5 & t$SI_SP <= 7
+  #       & t$LE_MSZ > 40,]$SI_STATE <- 1
   #############################################################################################################################################################################################
   
   
