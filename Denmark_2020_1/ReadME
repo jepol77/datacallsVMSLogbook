@@ -1,0 +1,15 @@
+Here you will find the codes that enable countries with commercial interests in danish waters to provide data on their fishing 
+fleets landings and effort in areas selected as possible future MPAs. 
+
+"1_Aggregate_and_write_output.R" can be run directly if your country already has a combined VMS/Logbook file in the tacsatEflalo format.
+If not, the two scripts "00_CleanTacsat_Eflalo.R" and "0_CombineTacsatAndEflalo.R" suggest a method for combining the two. VMS and Logbooks
+can be combined in several ways, so it is your responsibility to choose the method best suited for your country. For more information 
+see https://github.com/nielshintzen/vmstools/wiki.
+
+The following informations are requested within the proposed areas and by ICES square:
+-	Landings (total weight in KG) and landing values (Euro) by species, year and gear code
+-	Effort (hours) by year and gear code
+-	Number of unique vessels in each area by year for mobile bottom contacting gears and for other gears. 
+
+The following informations are requested within the proposed areas:
+-	VMS data positions with assumed fishing activity (after speed filter is applied) by year and gear code 
