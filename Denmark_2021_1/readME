@@ -1,0 +1,27 @@
+Here you will find the codes that enable countries with commercial interests in danish waters to provide data on their fishing 
+fleets landings and effort in areas selected as possible future MPAs. 
+
+"1_Aggregate_and_write_output.R" can be run directly if your country already has a combined VMS/Logbook file in the tacsatEflalo format.
+If not, the two scripts "00_CleanTacsat_Eflalo.R" and "0_CombineTacsatAndEflalo.R" suggest a method for combining the two. VMS and Logbooks
+can be combined in several ways, so it is your responsibility to choose the method best suited for your country. For more information 
+see https://github.com/nielshintzen/vmstools/wiki.
+
+Requested data is for the five sites mentioned below. Corresponding shapefiles can be found here: .
+-	“Lønstrup Rødgrund” – EU site code: DK00VA301, located in ICES-square 43F9
+-	“Thyborøn stenvolde” – EU site code: DK00VA348, located in ICES-square 42F7
+-	“Jyske Rev, Lillefiskerbanke” - EU site code: DK00VA257, located in ICES-squares 42F6 and 42F7
+-	“Store Rev” - EU site code: DK00VA258, located in ICES-square 44F9
+-	“Gule Rev” - EU site code: DK00VA259, located in ICES-squares 43F7 and 43F8.
+
+In addition, we also request data for the following ices squares: "42F6", "42F7", "43F6", "43F7", "43F8", "43F9", "44F8" and "44F9" (see figure 1). 
+
+
+The following informations are requested within the proposed areas and by ICES square:
+-	Landings (total weight in KG) and landing values (Euro) by species, year and gear code
+-	Effort (hours) by year and gear code
+-	Number of unique vessels in each area by year for mobile bottom contacting gears and for other gears. 
+
+The following informations are requested within the proposed areas:
+-	VMS data positions with assumed fishing activity (after speed filter is applied) by year and gear code 
+
+Thank You for filling out the requested form.
