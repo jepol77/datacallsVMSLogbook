@@ -6,7 +6,7 @@ If not, the two scripts "00_CleanTacsat_Eflalo.R" and "0_CombineTacsatAndEflalo.
 can be combined in several ways, so it is your responsibility to choose the method best suited for your country. For more information 
 see https://github.com/nielshintzen/vmstools/wiki.
 
-Requested data is for the five sites mentioned below. Corresponding shapefiles can be found here: .
+Requested data is for the five sites mentioned below. Corresponding shapefiles can be found here: https://github.com/jepol77/datacallsVMSLogbook/tree/Original/Denmark_2021_1/Shapes.
 -	“Lønstrup Rødgrund” – EU site code: DK00VA301, located in ICES-square 43F9
 -	“Thyborøn stenvolde” – EU site code: DK00VA348, located in ICES-square 42F7
 -	“Jyske Rev, Lillefiskerbanke” - EU site code: DK00VA257, located in ICES-squares 42F6 and 42F7
@@ -16,12 +16,15 @@ Requested data is for the five sites mentioned below. Corresponding shapefiles c
 In addition, we also request data for the following ices squares: "42F6", "42F7", "43F6", "43F7", "43F8", "43F9", "44F8" and "44F9" (see figure 1). 
 
 
-The following informations are requested within the proposed areas and by ICES square:
--	Landings (total weight in KG) and landing values (Euro) by species, year and gear code
--	Effort (hours) by year and gear code
--	Number of unique vessels in each area by year for mobile bottom contacting gears and for other gears. 
+The following information for the above mentioned Natura 2000 sites, by year, month and gear codes
+-	Landings (total weight in KG) and landing values (Euro) by species
+-	Effort (hours)
+-	Number of unique vessels in each area per month and per year for mobile bottom contacting gears and for other gears. 
 
-The following informations are requested within the proposed areas:
+
+The following informations are requested within the proposed areas (VMS data is only requested within the Natura 2000 areas, 
+which will enable us to see how large a proportion is within buffer zones around stone reefs/bubbling reefs):
 -	VMS data positions with assumed fishing activity (after speed filter is applied) by year and gear code 
+
 
 Thank You for filling out the requested form.
